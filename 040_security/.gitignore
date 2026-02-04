@@ -1,0 +1,8 @@
+# 040_security/ - すべてのファイルをGitから除外
+
+# すべてを無視
+*
+
+# ただしREADME.mdと.gitignore自体は追跡
+!README.md
+!.gitignore

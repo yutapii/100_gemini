@@ -1,0 +1,165 @@
+127.0.0.1 - - [04/Feb/2026 14:08:18] "GET /api/health HTTP/1.1" 200 -
+
+============================================================
+SIGTERM受信! ゴースト停止発生
+============================================================
+時刻: 2026-02-04 14:08:27
+PID: 59167
+親PID: 1
+親プロセス: /sbin/launchd /sbin/launchd
+シグナル: 15
+============================================================
+
+127.0.0.1 - - [04/Feb/2026 15:09:05] "POST /api/shutdown HTTP/1.1" 200 -
+127.0.0.1 - - [04/Feb/2026 15:09:09] "POST /api/shutdown HTTP/1.1" 200 -
+127.0.0.1 - - [04/Feb/2026 15:09:15] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [04/Feb/2026 15:09:15] code 404, message File not found
+127.0.0.1 - - [04/Feb/2026 15:09:15] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [04/Feb/2026 15:10:40] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [04/Feb/2026 15:10:40] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [04/Feb/2026 15:11:44] "GET /api/health HTTP/1.1" 200 -
+127.0.0.1 - - [04/Feb/2026 15:12:22] "POST /api/shutdown HTTP/1.1" 200 -
+127.0.0.1 - - [04/Feb/2026 15:12:23] "POST /api/shutdown HTTP/1.1" 200 -
+Traceback (most recent call last):
+  File "/Users/saitoyutaka/100_gemini/050_server/main.py", line 120, in <module>
+    run_server()
+  File "/Users/saitoyutaka/100_gemini/050_server/main.py", line 111, in run_server
+    httpd = HTTPServer(('', PORT), CustomHandler)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/saitoyutaka/.pyenv/versions/3.12.3/lib/python3.12/socketserver.py", line 457, in __init__
+    self.server_bind()
+  File "/Users/saitoyutaka/.pyenv/versions/3.12.3/lib/python3.12/http/server.py", line 136, in server_bind
+    socketserver.TCPServer.server_bind(self)
+  File "/Users/saitoyutaka/.pyenv/versions/3.12.3/lib/python3.12/socketserver.py", line 473, in server_bind
+    self.socket.bind(self.server_address)
+OSError: [Errno 48] Address already in use
+Traceback (most recent call last):
+  File "/Users/saitoyutaka/100_gemini/050_server/main.py", line 120, in <module>
+    run_server()
+  File "/Users/saitoyutaka/100_gemini/050_server/main.py", line 111, in run_server
+    httpd = HTTPServer(('', PORT), CustomHandler)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/saitoyutaka/.pyenv/versions/3.12.3/lib/python3.12/socketserver.py", line 457, in __init__
+    self.server_bind()
+  File "/Users/saitoyutaka/.pyenv/versions/3.12.3/lib/python3.12/http/server.py", line 136, in server_bind
+    socketserver.TCPServer.server_bind(self)
+  File "/Users/saitoyutaka/.pyenv/versions/3.12.3/lib/python3.12/socketserver.py", line 473, in server_bind
+    self.socket.bind(self.server_address)
+OSError: [Errno 48] Address already in use
+Traceback (most recent call last):
+  File "/Users/saitoyutaka/100_gemini/050_server/main.py", line 120, in <module>
+    run_server()
+  File "/Users/saitoyutaka/100_gemini/050_server/main.py", line 111, in run_server
+    httpd = HTTPServer(('', PORT), CustomHandler)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/saitoyutaka/.pyenv/versions/3.12.3/lib/python3.12/socketserver.py", line 457, in __init__
+    self.server_bind()
+  File "/Users/saitoyutaka/.pyenv/versions/3.12.3/lib/python3.12/http/server.py", line 136, in server_bind
+    socketserver.TCPServer.server_bind(self)
+  File "/Users/saitoyutaka/.pyenv/versions/3.12.3/lib/python3.12/socketserver.py", line 473, in server_bind
+    self.socket.bind(self.server_address)
+OSError: [Errno 48] Address already in use
+Traceback (most recent call last):
+  File "/Users/saitoyutaka/100_gemini/050_server/main.py", line 120, in <module>
+    run_server()
+  File "/Users/saitoyutaka/100_gemini/050_server/main.py", line 111, in run_server
+    httpd = HTTPServer(('', PORT), CustomHandler)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/saitoyutaka/.pyenv/versions/3.12.3/lib/python3.12/socketserver.py", line 457, in __init__
+    self.server_bind()
+  File "/Users/saitoyutaka/.pyenv/versions/3.12.3/lib/python3.12/http/server.py", line 136, in server_bind
+    socketserver.TCPServer.server_bind(self)
+  File "/Users/saitoyutaka/.pyenv/versions/3.12.3/lib/python3.12/socketserver.py", line 473, in server_bind
+    self.socket.bind(self.server_address)
+OSError: [Errno 48] Address already in use
+Traceback (most recent call last):
+  File "/Users/saitoyutaka/100_gemini/050_server/main.py", line 120, in <module>
+    run_server()
+  File "/Users/saitoyutaka/100_gemini/050_server/main.py", line 111, in run_server
+    httpd = HTTPServer(('', PORT), CustomHandler)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/saitoyutaka/.pyenv/versions/3.12.3/lib/python3.12/socketserver.py", line 457, in __init__
+    self.server_bind()
+  File "/Users/saitoyutaka/.pyenv/versions/3.12.3/lib/python3.12/http/server.py", line 136, in server_bind
+    socketserver.TCPServer.server_bind(self)
+  File "/Users/saitoyutaka/.pyenv/versions/3.12.3/lib/python3.12/socketserver.py", line 473, in server_bind
+    self.socket.bind(self.server_address)
+OSError: [Errno 48] Address already in use
+Traceback (most recent call last):
+  File "/Users/saitoyutaka/100_gemini/050_server/main.py", line 120, in <module>
+    run_server()
+  File "/Users/saitoyutaka/100_gemini/050_server/main.py", line 111, in run_server
+    httpd = HTTPServer(('', PORT), CustomHandler)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/saitoyutaka/.pyenv/versions/3.12.3/lib/python3.12/socketserver.py", line 457, in __init__
+    self.server_bind()
+  File "/Users/saitoyutaka/.pyenv/versions/3.12.3/lib/python3.12/http/server.py", line 136, in server_bind
+    socketserver.TCPServer.server_bind(self)
+  File "/Users/saitoyutaka/.pyenv/versions/3.12.3/lib/python3.12/socketserver.py", line 473, in server_bind
+    self.socket.bind(self.server_address)
+OSError: [Errno 48] Address already in use
+Traceback (most recent call last):
+  File "/Users/saitoyutaka/100_gemini/050_server/main.py", line 120, in <module>
+    run_server()
+  File "/Users/saitoyutaka/100_gemini/050_server/main.py", line 111, in run_server
+    httpd = HTTPServer(('', PORT), CustomHandler)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/saitoyutaka/.pyenv/versions/3.12.3/lib/python3.12/socketserver.py", line 457, in __init__
+    self.server_bind()
+  File "/Users/saitoyutaka/.pyenv/versions/3.12.3/lib/python3.12/http/server.py", line 136, in server_bind
+    socketserver.TCPServer.server_bind(self)
+  File "/Users/saitoyutaka/.pyenv/versions/3.12.3/lib/python3.12/socketserver.py", line 473, in server_bind
+    self.socket.bind(self.server_address)
+OSError: [Errno 48] Address already in use
+Traceback (most recent call last):
+  File "/Users/saitoyutaka/100_gemini/050_server/main.py", line 120, in <module>
+    run_server()
+  File "/Users/saitoyutaka/100_gemini/050_server/main.py", line 111, in run_server
+    httpd = HTTPServer(('', PORT), CustomHandler)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/saitoyutaka/.pyenv/versions/3.12.3/lib/python3.12/socketserver.py", line 457, in __init__
+    self.server_bind()
+  File "/Users/saitoyutaka/.pyenv/versions/3.12.3/lib/python3.12/http/server.py", line 136, in server_bind
+    socketserver.TCPServer.server_bind(self)
+  File "/Users/saitoyutaka/.pyenv/versions/3.12.3/lib/python3.12/socketserver.py", line 473, in server_bind
+    self.socket.bind(self.server_address)
+OSError: [Errno 48] Address already in use
+Traceback (most recent call last):
+  File "/Users/saitoyutaka/100_gemini/050_server/main.py", line 120, in <module>
+    run_server()
+  File "/Users/saitoyutaka/100_gemini/050_server/main.py", line 111, in run_server
+    httpd = HTTPServer(('', PORT), CustomHandler)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/saitoyutaka/.pyenv/versions/3.12.3/lib/python3.12/socketserver.py", line 457, in __init__
+    self.server_bind()
+  File "/Users/saitoyutaka/.pyenv/versions/3.12.3/lib/python3.12/http/server.py", line 136, in server_bind
+    socketserver.TCPServer.server_bind(self)
+  File "/Users/saitoyutaka/.pyenv/versions/3.12.3/lib/python3.12/socketserver.py", line 473, in server_bind
+    self.socket.bind(self.server_address)
+OSError: [Errno 48] Address already in use
+Traceback (most recent call last):
+  File "/Users/saitoyutaka/100_gemini/050_server/main.py", line 120, in <module>
+    run_server()
+  File "/Users/saitoyutaka/100_gemini/050_server/main.py", line 111, in run_server
+    httpd = HTTPServer(('', PORT), CustomHandler)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/saitoyutaka/.pyenv/versions/3.12.3/lib/python3.12/socketserver.py", line 457, in __init__
+    self.server_bind()
+  File "/Users/saitoyutaka/.pyenv/versions/3.12.3/lib/python3.12/http/server.py", line 136, in server_bind
+    socketserver.TCPServer.server_bind(self)
+  File "/Users/saitoyutaka/.pyenv/versions/3.12.3/lib/python3.12/socketserver.py", line 473, in server_bind
+    self.socket.bind(self.server_address)
+OSError: [Errno 48] Address already in use
+Traceback (most recent call last):
+  File "/Users/saitoyutaka/100_gemini/050_server/main.py", line 120, in <module>
+    run_server()
+  File "/Users/saitoyutaka/100_gemini/050_server/main.py", line 111, in run_server
+    httpd = HTTPServer(('', PORT), CustomHandler)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/saitoyutaka/.pyenv/versions/3.12.3/lib/python3.12/socketserver.py", line 457, in __init__
+    self.server_bind()
+  File "/Users/saitoyutaka/.pyenv/versions/3.12.3/lib/python3.12/http/server.py", line 136, in server_bind
+    socketserver.TCPServer.server_bind(self)
+  File "/Users/saitoyutaka/.pyenv/versions/3.12.3/lib/python3.12/socketserver.py", line 473, in server_bind
+    self.socket.bind(self.server_address)
+OSError: [Errno 48] Address already in use

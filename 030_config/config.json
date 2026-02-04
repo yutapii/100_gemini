@@ -1,0 +1,43 @@
+{
+  "system_name": "Gemini CLI",
+  "system_id": "100_gemini",
+  "system_number": "100",
+  "port": 5100,
+  "description": "Claude Code苦手科目担当（点検・検索・YouTube等）",
+  "role": "Code inspection, Web search, YouTube search support",
+  "wt_compliant": true,
+  "version": "1.0.0",
+  "created": "2026-02-04",
+  "paths": {
+    "root": "/Users/saitoyutaka/100_gemini",
+    "server": "/Users/saitoyutaka/100_gemini/050_server",
+    "ai_config": "/Users/saitoyutaka/100_gemini/010_ai/CLAUDE.md",
+    "work_reports": "/Users/saitoyutaka/100_gemini/020_work_reports",
+    "pending": "/Users/saitoyutaka/100_gemini/021_pending"
+  },
+  "integration": {
+    "stp_panel": "http://localhost:5030/",
+    "stp_api": "http://localhost:5030/api/gemini",
+    "controlled_by": "010_STP_APIv1/200_gemini/api.py"
+  },
+  "ai_command": "gemini",
+  "startup_prompt": "起動の作法を実行してください",
+  "capabilities": [
+    "Security code inspection",
+    "Web search (latest tech info)",
+    "YouTube video search",
+    "Bulk file pattern matching",
+    "Log analysis"
+  ],
+  "limitations": [
+    "Cannot edit files directly",
+    "Read-only for code inspection",
+    "Requires Claude Code for implementation"
+  ],
+  "collaboration": {
+    "claude_code": {
+      "workflow": "Claude Code implements → Gemini inspects → Claude Code fixes",
+      "handoff_format": "Markdown report with file paths and line numbers"
+    }
+  }
+}

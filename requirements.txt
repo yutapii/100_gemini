@@ -1,0 +1,6 @@
+PyMuPDF==1.24.0
+pdfplumber==0.11.0
+pypdf==4.1.0
+reportlab==4.0.9
+Pillow==10.2.0
+google-generativeai>=0.8.0

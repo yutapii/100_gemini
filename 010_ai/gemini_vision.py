@@ -29,7 +29,8 @@ genai.configure(api_key=api_key)
 
 
 def validate_image_path(path):
-    """画像パスのバリデーション（パストラバーサル対策）"""
+    """画像パスのバリデーション
+    （パストラバーサル対策）"""
     img_path = Path(path).resolve()
     if not img_path.exists():
         raise FileNotFoundError(

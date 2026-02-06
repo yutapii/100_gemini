@@ -16,7 +16,8 @@ from pathlib import Path
 
 
 def validate_output_path(path):
-    """出力パスのバリデーション（パストラバーサル対策）"""
+    """出力パスのバリデーション
+    （パストラバーサル対策）"""
     abs_path = os.path.abspath(path)
     allowed_prefixes = ["/tmp", str(Path.home())]
     if not any(abs_path.startswith(p) for p in allowed_prefixes):
@@ -42,7 +43,9 @@ def screenshot_url(url, output_path):
     return output_path
 
 def main():
-    parser = argparse.ArgumentParser(description="スクリーンショット取得")
+    parser = argparse.ArgumentParser(
+        description="スクリーンショット取得"
+    )
     parser.add_argument("--url", help="キャプチャするURL")
     parser.add_argument("--output", "-o", help="出力ファイルパス")
     args = parser.parse_args()

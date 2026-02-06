@@ -16,7 +16,7 @@ from pathlib import Path
 ALLOWED_JS_DIR = Path.home() / "100_gemini/010_ai/safe_scripts"
 
 def validate_js_file(filepath):
-    """JSファイルパスのバリデーション（パストラバーサル対策）"""
+    """JSパスのバリデーション（パストラバーサル対策）"""
     path = Path(filepath).resolve()
     if not path.is_relative_to(ALLOWED_JS_DIR):
         raise ValueError(
@@ -32,7 +32,7 @@ def validate_js_file(filepath):
 def run_js_chrome(js_code):
     """ChromeでJavaScript実行
 
-    注意: 外部JSコードの実行は危険。信頼できるファイルのみ使用すること
+    注意: 外部JSは危険。信頼できるファイルのみ使用
     """
     script = f'''
     tell application "Google Chrome"

@@ -1,0 +1,5 @@
+[2026-02-06 15:25:11] grep実行開始
+/Users/saitoyutaka/100_gemini/010_ai/gemini_vision.py:16:api_key = os.environ.get("GEMINI_API_KEY", "")
+/Users/saitoyutaka/100_gemini/010_ai/gemini_vision.py:21:                api_key = line.split("=", 1)[1].strip().strip('"').strip("'")
+/Users/saitoyutaka/100_gemini/010_ai/gemini_vision.py:28:genai.configure(api_key=api_key)
+[2026-02-06 15:25:11] grep実行成功（検出あり）

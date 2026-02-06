@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-【ミッション：傷病手当申請書の11月分を12月・1月分へ完全置換せよ】
+傷病手当申請書: 11月分を12月・1月分へ完全置換
 白塗り+上書き実行
 """
 
@@ -123,9 +123,8 @@ def mask_and_replace(page, bbox, new_text, fontsize=23):
     insert_point = fitz.Point(bbox[0], bbox[3] - 4)
 
     # 日本語フォント使用
-    rc = page.insert_font(
-        fontname="japan", fontfile="/System/Library/Fonts/ヒラギノ角ゴシック W4.ttc"
-    )
+    font_file = "/System/Library/Fonts/ヒラギノ角ゴシック W4.ttc"
+    rc = page.insert_font(fontname="japan", fontfile=font_file)
 
     page.insert_text(
         insert_point,
@@ -175,7 +174,10 @@ def main():
     coords = get_date_coordinates(input_pdf)
 
     for key, bbox in coords.items():
-        print(f"\n{key}: x0={bbox[0]:.1f} y0={bbox[1]:.1f} x1={bbox[2]:.1f} y1={bbox[3]:.1f}")
+        print(
+            f"\n{key}: x0={bbox[0]:.1f} y0={bbox[1]:.1f} "
+            f"x1={bbox[2]:.1f} y1={bbox[3]:.1f}"
+        )
 
     print("\n" + "=" * 60)
     print("【ステップ2】白塗り+上書き実行")

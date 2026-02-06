@@ -150,7 +150,7 @@ def fill_with_layers(template_pdf, output_pdf, kigou="201",
         output_pdf: 出力PDF
         kigou: 記号
         bangou: 番号
-        show_x: Xレイヤを表示するか（True=座標確認, False=最終版）
+        show_x: Xレイヤ表示（True=座標確認, False=最終版）
     """
     try:
         reader = PdfReader(template_pdf)
@@ -179,8 +179,8 @@ def fill_with_layers(template_pdf, output_pdf, kigou="201",
         with open(output_pdf, "wb") as f:
             writer.write(f)
 
-        mode = "座標確認モード（X線あり）" if show_x else "最終版（X線なし）"
-        print(f"✅ 作成完了: {output_pdf} ({mode})")
+        mode_str = "座標確認（X線あり）" if show_x else "最終版"
+        print(f"✅ 作成完了: {output_pdf} ({mode_str})")
 
     except Exception as e:
         print(f"エラー: {e}")

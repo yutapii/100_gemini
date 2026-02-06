@@ -10,24 +10,26 @@ TARGET_DIR="${1:-.}"
 INSPECTION_PROMPT="${2:-品質検査を実行してください}"
 MODEL="${3:-gemini-2.5-flash-lite}"  # デフォルトはFlash-Lite
 
-echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo "-----------------------------------------"
 echo "Gemini自動リトライ検査"
-echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo "-----------------------------------------"
 echo "対象: $TARGET_DIR"
 echo "モデル: $MODEL"
 echo "最大リトライ: $MAX_RETRIES回"
-echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo "-----------------------------------------"
 echo ""
 
 attempt=1
 
 while [ $attempt -le $MAX_RETRIES ]; do
     echo "🔄 試行 $attempt/$MAX_RETRIES..."
-    echo "実行: cd $TARGET_DIR && gemini --model $MODEL \"$INSPECTION_PROMPT\""
+    echo "実行: cd $TARGET_DIR && \\"
+    echo "      gemini --model $MODEL \"$INSPECTION_PROMPT\""
     echo ""
 
     # Gemini実行（エラーをキャプチャ）
-    if output=$(cd "$TARGET_DIR" && gemini --model "$MODEL" "$INSPECTION_PROMPT" 2>&1); then
+    if output=$(cd "$TARGET_DIR" && \
+            gemini --model "$MODEL" "$INSPECTION_PROMPT" 2>&1); then
         echo "✅ 検査成功！"
         echo "$output"
         exit 0
@@ -39,7 +41,7 @@ while [ $attempt -le $MAX_RETRIES ]; do
             # RPM/TPM制限と判定
             if [ $attempt -lt $MAX_RETRIES ]; then
                 echo "💤 ${WAIT_TIME}秒待機してリトライ..."
-                echo "（RPM/TPMクォータは60秒でリセットされます）"
+                echo "（クォータは60秒でリセット）"
                 echo ""
 
                 # カウントダウン表示
@@ -52,7 +54,7 @@ while [ $attempt -le $MAX_RETRIES ]; do
             else
                 echo "❌ 最大リトライ回数に達しました"
                 echo ""
-                echo "【原因】RPD（1日のクォータ）制限の可能性"
+                echo "【原因】RPD（1日クォータ）制限の可能性"
                 echo "【対策】"
                 echo "  1. 翌日午前0時（太平洋時間）まで待つ"
                 echo "  2. モデルを変更（Flash-Lite → Flash → Pro）"

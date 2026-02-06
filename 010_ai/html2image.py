@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-html2image.py - HTMLファイルをフルページ画像に変換（Chrome headless版）
+html2image.py - HTML→画像変換（Chrome headless版）
 
 使い方:
-    python3 html2image.py input.html                    # PNG出力（フルページ）
+    python3 html2image.py input.html          # PNG出力
     python3 html2image.py http://localhost:5050/        # URL指定
     python3 html2image.py input.html --output out.png
     python3 html2image.py input.html --width 1280 --height 1800
@@ -34,14 +34,15 @@ if not os.path.exists(CHROME_PATH):
 
 
 def validate_output_path(path):
-    """出力パスのバリデーション（パストラバーサル対策）"""
+    """出力パスのバリデーション（パストラバ対策）"""
     abs_path = os.path.abspath(path)
     allowed_prefixes = ["/tmp", str(Path.home())]
     if not any(abs_path.startswith(p) for p in allowed_prefixes):
         raise ValueError(f"出力パスが許可されていません: {path}")
     return abs_path
 
-def html_to_image(url_or_path, output_path, width=1280, height=1800, wait_ms=5000):
+def html_to_image(url_or_path, output_path, width=1280,
+                  height=1800, wait_ms=5000):
     """Chrome headlessでフルページスクリーンショット"""
 
     # ファイルパスの場合はfile://に変換

@@ -182,61 +182,6 @@
             font-size: 0.9em;
             color: #666;
         }
-        .ssh-command-box {
-            background: #2d3748;
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 30px;
-            border-left: 5px solid #667eea;
-        }
-        .ssh-command-box h3 {
-            color: #667eea;
-            margin-bottom: 15px;
-            font-size: 1.3em;
-        }
-        .command-item {
-            background: #1a202c;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 15px;
-        }
-        .command-label {
-            color: #a0aec0;
-            font-size: 0.9em;
-            margin-bottom: 8px;
-        }
-        .command-text {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .command-input {
-            flex: 1;
-            background: #0d1117;
-            color: #00ff00;
-            border: 1px solid #30363d;
-            padding: 10px;
-            border-radius: 6px;
-            font-family: 'Courier New', monospace;
-            font-size: 0.9em;
-        }
-        .copy-btn {
-            background: #667eea;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: all 0.3s;
-        }
-        .copy-btn:hover {
-            background: #5a67d8;
-            transform: scale(1.05);
-        }
-        .copy-btn:active {
-            transform: scale(0.95);
-        }
     </style>
 </head>
 <body>
@@ -292,53 +237,6 @@
             <div class="stat-item">
                 <div class="stat-value">100%</div>
                 <div class="stat-label">準拠率</div>
-            </div>
-        </div>
-
-        <!-- Windows用 SSH品質検査コマンド -->
-        <div class="ssh-command-box">
-            <h3>🔍 Windows用 - Gemini品質検査（SSH経由）</h3>
-
-            <div class="command-item">
-                <div class="command-label">
-                    💎 厳しい品質検査モード
-                </div>
-                <div class="command-text">
-                    <input
-                        type="text"
-                        class="command-input"
-                        id="qualityCheckCmd"
-                        value='ssh saitoyutaka@100.94.146.92 -t "cd ~/100_gemini && gemini \"Geminiを君のターミナル内で起動させて終了及びSTEPの途中で厳しい品質検査させろ\""'
-                        readonly
-                    >
-                    <button
-                        class="copy-btn"
-                        onclick="copyCommand('qualityCheckCmd')"
-                    >
-                        Copy
-                    </button>
-                </div>
-            </div>
-
-            <div class="command-item">
-                <div class="command-label">
-                    🚀 起動の作法（通常起動）
-                </div>
-                <div class="command-text">
-                    <input
-                        type="text"
-                        class="command-input"
-                        id="startupCmd"
-                        value='ssh saitoyutaka@100.94.146.92 -t "cd ~/100_gemini && gemini \"起動の作法を実行してください\""'
-                        readonly
-                    >
-                    <button
-                        class="copy-btn"
-                        onclick="copyCommand('startupCmd')"
-                    >
-                        Copy
-                    </button>
-                </div>
             </div>
         </div>
 
@@ -519,28 +417,5 @@
             </p>
         </div>
     </div>
-
-    <script>
-        function copyCommand(elementId) {
-            const input = document.getElementById(elementId);
-            input.select();
-            input.setSelectionRange(0, 99999); // モバイル対応
-
-            try {
-                document.execCommand('copy');
-                const btn = event.target;
-                const originalText = btn.textContent;
-                btn.textContent = '✓ Copied!';
-                btn.style.background = '#48bb78';
-
-                setTimeout(() => {
-                    btn.textContent = originalText;
-                    btn.style.background = '#667eea';
-                }, 2000);
-            } catch (err) {
-                alert('コピーに失敗しました: ' + err);
-            }
-        }
-    </script>
 </body>
 </html>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+  "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.gemini.inspection.nightly</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/bash</string>
+        <string>-c</string>
+        <string>
+cd $HOME/100_gemini/107_orchestrator &amp;&amp; \
+./run_inspection.sh $HOME/100_gemini --force \
+  >> $HOME/100_gemini/020_work_reports/nightly.log 2>&amp;1
+        </string>
+    </array>
+
+    <key>StartCalendarInterval</key>
+    <dict>
+        <key>Hour</key>
+        <integer>2</integer>
+        <key>Minute</key>
+        <integer>0</integer>
+    </dict>
+
+    <key>StandardOutPath</key>
+    <string>/Users/saitoyutaka/100_gemini/020_work_reports/launchd.log</string>
+
+    <key>StandardErrorPath</key>
+    <string>/Users/saitoyutaka/100_gemini/020_work_reports/launchd.err</string>
+
+    <key>RunAtLoad</key>
+    <false/>
+
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/usr/local/bin:/usr/bin:/bin:/opt/homebrew/bin</string>
+        <key>HOME</key>
+        <string>/Users/saitoyutaka</string>
+    </dict>
+</dict>
+</plist>

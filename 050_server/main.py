@@ -108,7 +108,8 @@ class CustomHandler(SimpleHTTPRequestHandler):
 
 
 def run_server():
-    httpd = HTTPServer(('', PORT), CustomHandler)
+    # セキュリティ: pfファイアウォールで保護（0.0.0.0 + pf）
+    httpd = HTTPServer(('0.0.0.0', PORT), CustomHandler)
     print(f"🚀 {SYSTEM_NAME} Server on port {PORT}")
     try:
         httpd.serve_forever()

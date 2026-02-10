@@ -2,248 +2,16 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width,
+initial-scale=1.0">
     <title>Gemini CLI - 100番地</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            background-attachment: fixed;
-            padding: 20px;
-            min-height: 100vh;
-            color: #333;
-        }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-        }
-        h1 {
-            font-size: 3em;
-            color: #667eea;
-            margin-bottom: 10px;
-            text-align: center;
-        }
-        .subtitle {
-            text-align: center;
-            font-size: 1.2em;
-            color: #666;
-            margin-bottom: 30px;
-        }
-        .badge {
-            display: inline-block;
-            background: #667eea;
-            color: white;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.9em;
-            margin: 0 5px;
-        }
-        .info-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 40px;
-        }
-        .info-card {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            padding: 20px;
-            border-radius: 15px;
-            border-left: 4px solid #667eea;
-        }
-        .info-label {
-            font-size: 0.9em;
-            color: #666;
-            margin-bottom: 5px;
-        }
-        .info-value {
-            font-size: 1.3em;
-            font-weight: bold;
-            color: #333;
-        }
-        .section {
-            margin-bottom: 40px;
-        }
-        .section h2 {
-            font-size: 1.8em;
-            color: #667eea;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 3px solid #667eea;
-        }
-        .folder-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 15px;
-        }
-        .folder-card {
-            background: white;
-            border: 2px solid #e0e0e0;
-            border-radius: 12px;
-            padding: 20px;
-            transition: all 0.3s;
-            cursor: pointer;
-        }
-        .folder-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
-            border-color: #667eea;
-        }
-        .folder-card.critical {
-            border-left: 5px solid #f44336;
-        }
-        .folder-card.standard {
-            border-left: 5px solid #4caf50;
-        }
-        .folder-card.custom {
-            border-left: 5px solid #ff9800;
-        }
-        .folder-name {
-            font-size: 1.3em;
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 8px;
-        }
-        .folder-desc {
-            font-size: 0.9em;
-            color: #666;
-            line-height: 1.5;
-        }
-        .folder-badge {
-            display: inline-block;
-            background: #e0e0e0;
-            color: #666;
-            padding: 3px 10px;
-            border-radius: 12px;
-            font-size: 0.75em;
-            margin-top: 10px;
-        }
-        .folder-badge.wt {
-            background: #4caf50;
-            color: white;
-        }
-        .folder-badge.critical {
-            background: #f44336;
-            color: white;
-        }
-        .wt-notice {
-            background: linear-gradient(135deg, #ffeaa7, #fdcb6e);
-            padding: 20px;
-            border-radius: 12px;
-            margin-bottom: 30px;
-            border-left: 5px solid #e17055;
-        }
-        .wt-notice h3 {
-            color: #d63031;
-            margin-bottom: 10px;
-        }
-        .quick-links {
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-            margin-bottom: 30px;
-        }
-        .quick-link {
-            display: inline-block;
-            background: #667eea;
-            color: white;
-            padding: 12px 24px;
-            border-radius: 10px;
-            text-decoration: none;
-            font-weight: bold;
-            transition: all 0.3s;
-        }
-        .quick-link:hover {
-            background: #5a67d8;
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-        }
-        .stats {
-            display: flex;
-            justify-content: space-around;
-            background: linear-gradient(135deg, #667eea15, #764ba215);
-            padding: 20px;
-            border-radius: 12px;
-            margin-bottom: 30px;
-        }
-        .stat-item {
-            text-align: center;
-        }
-        .stat-value {
-            font-size: 2.5em;
-            font-weight: bold;
-            color: #667eea;
-        }
-        .stat-label {
-            font-size: 0.9em;
-            color: #666;
-        }
-        .ssh-command-box {
-            background: #2d3748;
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 30px;
-            border-left: 5px solid #667eea;
-        }
-        .ssh-command-box h3 {
-            color: #667eea;
-            margin-bottom: 15px;
-            font-size: 1.3em;
-        }
-        .command-item {
-            background: #1a202c;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 15px;
-        }
-        .command-label {
-            color: #a0aec0;
-            font-size: 0.9em;
-            margin-bottom: 8px;
-        }
-        .command-text {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .command-input {
-            flex: 1;
-            background: #0d1117;
-            color: #00ff00;
-            border: 1px solid #30363d;
-            padding: 10px;
-            border-radius: 6px;
-            font-family: 'Courier New', monospace;
-            font-size: 0.9em;
-        }
-        .copy-btn {
-            background: #667eea;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: all 0.3s;
-        }
-        .copy-btn:hover {
-            background: #5a67d8;
-            transform: scale(1.05);
-        }
-        .copy-btn:active {
-            transform: scale(0.95);
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
         <h1>🔍 Gemini CLI</h1>
         <p class="subtitle">
-            Claude Code苦手科目担当（点検・検索・YouTube等）
+            Claude Code苦手科目担当（点検・検索・YouTube）
             <br>
             <span class="badge">番地: 100</span>
             <span class="badge">ポート: 5100</span>
@@ -272,11 +40,16 @@
 
         <!-- クイックリンク -->
         <div class="quick-links">
-            <a href="010_ai/CLAUDE.md" class="quick-link">📋 AI設定</a>
-            <a href="021_pending/pending.md" class="quick-link">📝 タスク</a>
-            <a href="000_concept/README.md" class="quick-link">📖 ドキュメント</a>
-            <a href="http://localhost:5030/" class="quick-link">🎛️ STPパネル</a>
-            <a href="https://github.com/yutapii/100_gemini" class="quick-link">💻 GitHub</a>
+            <a href="010_ai/CLAUDE.md" class="quick-link">
+📋 AI設定</a>
+            <a href="021_pending/pending.md"
+class="quick-link">📝 タスク</a>
+            <a href="000_concept/README.md"
+class="quick-link">📖 ドキュメント</a>
+            <a href="http://localhost:5030/"
+class="quick-link">🎛️ STPパネル</a>
+            <a href="https://github.com/yutapii/100_gemini"
+class="quick-link">💻 GitHub</a>
         </div>
 
         <!-- 統計 -->
@@ -295,49 +68,33 @@
             </div>
         </div>
 
-        <!-- Windows用 SSH品質検査コマンド -->
+        <!-- Windows用 SSH -->
         <div class="ssh-command-box">
-            <h3>🔍 Windows用 - Gemini品質検査（SSH経由）</h3>
-
+            <h3>🔍 Windows - Gemini検査コマンド</h3>
             <div class="command-item">
                 <div class="command-label">
-                    💎 厳しい品質検査モード
+厳しい品質検査モード
                 </div>
                 <div class="command-text">
-                    <input
-                        type="text"
-                        class="command-input"
-                        id="qualityCheckCmd"
-                        value='ssh saitoyutaka@100.94.146.92 -t "cd ~/100_gemini && gemini \"Geminiを君のターミナル内で起動させて終了及びSTEPの途中で厳しい品質検査させろ\""'
-                        readonly
-                    >
-                    <button
-                        class="copy-btn"
-                        onclick="copyCommand('qualityCheckCmd')"
-                    >
-                        Copy
-                    </button>
+                    <input type="text"
+class="command-input"
+id="qualityCheckCmd" readonly>
+                    <button class="copy-btn"
+onclick="copyCommand('qualityCheckCmd')">
+Copy</button>
                 </div>
             </div>
-
             <div class="command-item">
                 <div class="command-label">
-                    🚀 起動の作法（通常起動）
+起動の作法（通常起動）
                 </div>
                 <div class="command-text">
-                    <input
-                        type="text"
-                        class="command-input"
-                        id="startupCmd"
-                        value='ssh saitoyutaka@100.94.146.92 -t "cd ~/100_gemini && gemini \"起動の作法を実行してください\""'
-                        readonly
-                    >
-                    <button
-                        class="copy-btn"
-                        onclick="copyCommand('startupCmd')"
-                    >
-                        Copy
-                    </button>
+                    <input type="text"
+class="command-input"
+id="startupCmd" readonly>
+                    <button class="copy-btn"
+onclick="copyCommand('startupCmd')">
+Copy</button>
                 </div>
             </div>
         </div>
@@ -347,158 +104,190 @@
             <h3>⚠️ WT標準ルール（000-099番地）</h3>
             <p>
                 <strong>絶対禁止事項</strong>：<br>
-                ❌ 050_server/を削除・移動・リネーム<br>
-                ❌ 000-099番地のフォルダを100番台に移動<br>
-                ✅ 100番以降は独自領域（自由に設計可）
+                ❌ 050_server/削除・移動・リネーム<br>
+                ❌ 000-099を100番台に移動<br>
+                ✅ 100番以降は自由設計
             </p>
         </div>
 
-        <!-- WT標準フォルダ（000-099） -->
+        <!-- WT標準フォルダ -->
         <div class="section">
             <h2>WT標準フォルダ（000-099番地）</h2>
             <div class="folder-grid">
-                <a href="000_concept/" style="text-decoration: none; color: inherit;">
+                <a href="000_concept/"
+style="text-decoration: none; color: inherit;">
                     <div class="folder-card standard">
                         <div class="folder-name">📁 000_concept/</div>
                         <div class="folder-desc">
-                            設計ドキュメント・マニュアル<br>
-                            システム概要、アーキテクチャ
+設計ドキュメント・マニュアル<br>
+システム概要、アーキテクチャ
                         </div>
-                        <span class="folder-badge wt">WT標準</span>
+                        <span class="folder-badge wt">
+WT標準</span>
                     </div>
                 </a>
 
-                <a href="010_ai/" style="text-decoration: none; color: inherit;">
+                <a href="010_ai/"
+style="text-decoration: none; color: inherit;">
                     <div class="folder-card critical">
                         <div class="folder-name">📁 010_ai/</div>
                         <div class="folder-desc">
-                            AI設定（CLAUDE.md）<br>
-                            起動の作法、役割定義
+AI設定（CLAUDE.md）<br>
+起動の作法、役割定義
                         </div>
-                        <span class="folder-badge critical">Critical</span>
-                        <span class="folder-badge wt">WT標準</span>
+                        <span class="folder-badge critical">
+Critical</span>
+                        <span class="folder-badge wt">
+WT標準</span>
                     </div>
                 </a>
 
-                <a href="020_work_reports/" style="text-decoration: none; color: inherit;">
+                <a href="020_work_reports/"
+style="text-decoration: none; color: inherit;">
                     <div class="folder-card standard">
-                        <div class="folder-name">📁 020_work_reports/</div>
+                        <div class="folder-name">
+📁 020_work_reports/</div>
                         <div class="folder-desc">
-                            作業報告・セッション記録<br>
-                            YYYY-MM-DD_HH-MM.md形式
+作業報告・セッション記録<br>
+YYYY-MM-DD_HH-MM.md形式
                         </div>
-                        <span class="folder-badge wt">WT標準</span>
+                        <span class="folder-badge wt">
+WT標準</span>
                     </div>
                 </a>
 
-                <a href="021_pending/pending.md" style="text-decoration: none; color: inherit;">
+                <a href="021_pending/pending.md"
+style="text-decoration: none; color: inherit;">
                     <div class="folder-card standard">
-                        <div class="folder-name">📁 021_pending/</div>
+                        <div class="folder-name">
+📁 021_pending/</div>
                         <div class="folder-desc">
-                            ペンディングタスク管理<br>
-                            TODO・優先度管理
+ペンディングタスク管理<br>
+TODO・優先度管理
                         </div>
-                        <span class="folder-badge wt">WT標準</span>
+                        <span class="folder-badge wt">
+WT標準</span>
                     </div>
                 </a>
 
-                <a href="030_config/" style="text-decoration: none; color: inherit;">
+                <a href="030_config/"
+style="text-decoration: none; color: inherit;">
                     <div class="folder-card standard">
                         <div class="folder-name">📁 030_config/</div>
                         <div class="folder-desc">
-                            設定ファイル<br>
-                            config.json、システム設定
+設定ファイル<br>
+config.json、システム設定
                         </div>
-                        <span class="folder-badge wt">WT標準</span>
+                        <span class="folder-badge wt">
+WT標準</span>
                     </div>
                 </a>
 
-                <a href="040_security/" style="text-decoration: none; color: inherit;">
+                <a href="040_security/"
+style="text-decoration: none; color: inherit;">
                     <div class="folder-card standard">
-                        <div class="folder-name">📁 040_security/</div>
+                        <div class="folder-name">
+📁 040_security/</div>
                         <div class="folder-desc">
-                            セキュリティ設定<br>
-                            API キー、認証情報（.gitignore済み）
+セキュリティ設定<br>
+API キー（.gitignore済み）
                         </div>
-                        <span class="folder-badge wt">WT標準</span>
+                        <span class="folder-badge wt">
+WT標準</span>
                     </div>
                 </a>
 
-                <a href="050_server/" style="text-decoration: none; color: inherit;">
+                <a href="050_server/"
+style="text-decoration: none; color: inherit;">
                     <div class="folder-card critical">
-                        <div class="folder-name">📁 050_server/</div>
+                        <div class="folder-name">
+📁 050_server/</div>
                         <div class="folder-desc">
-                            サーバー起動スクリプト<br>
-                            main.py、start_server.sh（必須）
+サーバー起動スクリプト<br>
+main.py、start_server.sh（必須）
                         </div>
-                        <span class="folder-badge critical">Critical</span>
-                        <span class="folder-badge wt">WT標準</span>
+                        <span class="folder-badge critical">
+Critical</span>
+                        <span class="folder-badge wt">
+WT標準</span>
                     </div>
                 </a>
 
-                <a href="060_data/" style="text-decoration: none; color: inherit;">
+                <a href="060_data/"
+style="text-decoration: none; color: inherit;">
                     <div class="folder-card standard">
                         <div class="folder-name">📁 060_data/</div>
                         <div class="folder-desc">
-                            データ保存領域<br>
-                            ログ、キャッシュ（.gitignore済み）
+データ保存領域<br>
+ログ、キャッシュ（.gitignore済み）
                         </div>
-                        <span class="folder-badge wt">WT標準</span>
+                        <span class="folder-badge wt">
+WT標準</span>
                     </div>
                 </a>
 
-                <a href="080_tps/" style="text-decoration: none; color: inherit;">
+                <a href="080_tps/"
+style="text-decoration: none; color: inherit;">
                     <div class="folder-card standard">
                         <div class="folder-name">📁 080_tps/</div>
                         <div class="folder-desc">
-                            TPS改善活動<br>
-                            問題解決、標準化、効率化
+TPS改善活動<br>
+問題解決、標準化、効率化
                         </div>
-                        <span class="folder-badge wt">WT標準</span>
+                        <span class="folder-badge wt">
+WT標準</span>
                     </div>
                 </a>
 
-                <a href="999_trash/" style="text-decoration: none; color: inherit;">
+                <a href="999_trash/"
+style="text-decoration: none; color: inherit;">
                     <div class="folder-card critical">
                         <div class="folder-name">📁 999_trash/</div>
                         <div class="folder-desc">
-                            アーカイブ（削除禁止）<br>
-                            知恵の保管庫、移動のみ
+アーカイブ（削除禁止）<br>
+知恵の保管庫、移動のみ
                         </div>
-                        <span class="folder-badge critical">Critical</span>
-                        <span class="folder-badge wt">WT標準</span>
+                        <span class="folder-badge critical">
+Critical</span>
+                        <span class="folder-badge wt">
+WT標準</span>
                     </div>
                 </a>
             </div>
         </div>
 
-        <!-- 独自領域（100+） -->
+        <!-- 独自領域 -->
         <div class="section">
             <h2>独自領域（100番以降）</h2>
             <div class="folder-grid">
-                <div class="folder-card custom" style="opacity: 0.6;">
-                    <div class="folder-name">📁 100_inspection_tools/</div>
+                <div class="folder-card custom"
+style="opacity: 0.6;">
+                    <div class="folder-name">
+📁 100_inspection_tools/</div>
                     <div class="folder-desc">
-                        コード検査ツール（予定）<br>
-                        セキュリティ診断スクリプト
+コード検査ツール（予定）<br>
+セキュリティ診断スクリプト
                     </div>
                     <span class="folder-badge">未作成</span>
                 </div>
 
-                <div class="folder-card custom" style="opacity: 0.6;">
-                    <div class="folder-name">📁 110_search_scripts/</div>
+                <div class="folder-card custom"
+style="opacity: 0.6;">
+                    <div class="folder-name">
+📁 110_search_scripts/</div>
                     <div class="folder-desc">
-                        検索スクリプト（予定）<br>
-                        Web/YouTube検索ツール
+検索スクリプト（予定）<br>
+Web/YouTube検索ツール
                     </div>
                     <span class="folder-badge">未作成</span>
                 </div>
 
-                <div class="folder-card custom" style="opacity: 0.6;">
+                <div class="folder-card custom"
+style="opacity: 0.6;">
                     <div class="folder-name">📁 120_cache/</div>
                     <div class="folder-desc">
-                        検索結果キャッシュ（予定）<br>
-                        パフォーマンス向上
+検索結果キャッシュ（予定）<br>
+パフォーマンス向上
                     </div>
                     <span class="folder-badge">未作成</span>
                 </div>
@@ -506,41 +295,61 @@
         </div>
 
         <!-- フッター -->
-        <div style="text-align: center; margin-top: 40px; color: #999; font-size: 0.9em;">
+        <div class="footer">
             <p>Gemini CLI v1.0 - WT Standard Compliant</p>
-            <p>Last Updated: 2026-02-04</p>
+            <p>Last Updated: 2026-02-10</p>
             <p>
-                <a href="https://github.com/yutapii/100_gemini" style="color: #667eea; text-decoration: none;">
-                    GitHub Repository
-                </a> |
-                <a href="http://localhost:5030/" style="color: #667eea; text-decoration: none;">
-                    STP Panel
-                </a>
+                <a href="https://github.com/yutapii/100_gemini">
+GitHub Repository</a> |
+                <a href="http://localhost:5030/">
+STP Panel</a>
             </p>
         </div>
     </div>
 
     <script>
-        function copyCommand(elementId) {
-            const input = document.getElementById(elementId);
-            input.select();
-            input.setSelectionRange(0, 99999); // モバイル対応
+const CMDS = {
+  qualityCheckCmd: (
+    'ssh saitoyutaka@100.94.146.92 -t "' +
+    'cd ~/100_gemini && gemini ' +
+    '\"Geminiを君のターミナル内で起動させて' +
+    '終了及びSTEPの途中で厳しい品質検査させろ\"' +
+    '"'
+  ),
+  startupCmd: (
+    'ssh saitoyutaka@100.94.146.92 -t "' +
+    'cd ~/100_gemini && gemini ' +
+    '\"起動の作法を実行してください\"' +
+    '"'
+  )
+};
 
-            try {
-                document.execCommand('copy');
-                const btn = event.target;
-                const originalText = btn.textContent;
-                btn.textContent = '✓ Copied!';
-                btn.style.background = '#48bb78';
+window.addEventListener('DOMContentLoaded', () => {
+  Object.entries(CMDS).forEach(([id, cmd]) => {
+    const el = document.getElementById(id);
+    if (el) el.value = cmd;
+  });
+});
 
-                setTimeout(() => {
-                    btn.textContent = originalText;
-                    btn.style.background = '#667eea';
-                }, 2000);
-            } catch (err) {
-                alert('コピーに失敗しました: ' + err);
-            }
-        }
+function copyCommand(elementId) {
+    const input =
+document.getElementById(elementId);
+    input.select();
+    input.setSelectionRange(0, 99999);
+    try {
+        document.execCommand('copy');
+        const btn = event.target;
+        const originalText = btn.textContent;
+        btn.textContent = '✓ Copied!';
+        btn.style.background = '#48bb78';
+        setTimeout(() => {
+            btn.textContent = originalText;
+            btn.style.background = '#667eea';
+        }, 2000);
+    } catch (err) {
+        alert('コピー失敗: ' + err);
+    }
+}
     </script>
 </body>
 </html>

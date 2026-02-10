@@ -1,0 +1,4 @@
+[2026-02-06 18:53:18] wc -l 実行開始
+      61 /Users/saitoyutaka/100_gemini/105_night_mode/night_mode_controller.sh
+      85 /Users/saitoyutaka/100_gemini/105_night_mode/setup_launchd.sh
+[2026-02-06 18:53:18] wc -l 実行成功

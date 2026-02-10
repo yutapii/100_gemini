@@ -564,6 +564,96 @@ AI「コマンド実行しました」← 本当に実行したか不明
 
 ---
 
+## 📊 Phase間フィードバックループ（計画実行制御）
+
+### 根本原則
+
+**「計画通りの実行」を保証するため、各Phase完了後に証跡ベース判定を実施**
+
+### フィードバックサイクル
+
+```
+Phase N実施
+    ↓
+証跡収集（101_evidence_collector/）
+    ↓
+Gemini分析（102-104_inspector_*/）
+    ↓
+CC検証（108_cc_verifier/）
+    ↓
+判定結果に基づき次Phase実施判断
+    ↓
+Phase N+1実施 or 修正 or ユーザー確認
+```
+
+### Phase完了後の判定基準
+
+**判定パターン**:
+
+1. **Phase完了 + 問題なし + 次Phase必要**
+   → 次Phaseを実施
+
+2. **Phase完了 + 問題あり**
+   → 修正後、当該Phase再実施
+
+3. **Phase完了 + 次Phase不要**
+   → Phase完了報告、作業終了
+
+4. **Phase完了 + 判定不明**
+   → ユーザー確認
+
+### 判定実施手順
+
+**1. 証跡収集**
+```bash
+cd ~/100_gemini/101_evidence_collector
+./collect_evidence.sh [対象DIR] > /tmp/phase_N_evidence.log
+```
+
+**2. Gemini分析**
+```bash
+gemini --model "gemini-2.5-flash" "
+Phase N証跡を分析し、Phase N+1の必要性を判定してください。
+
+【証跡】
+$(cat /tmp/phase_N_evidence.log)
+
+【判定基準】
+1. Phase Nで問題発見 → Phase N+1必須
+2. システムが複雑 → 次Phase必要
+3. 手動運用で十分 → 次Phase不要
+
+【出力】
+Phase N+1: 必要/不要
+理由: [具体的根拠]
+"
+```
+
+**3. CC検証**
+```bash
+cd ~/100_gemini/108_cc_verifier
+./verify_gemini.sh [Geminiレポート] [証跡DIR] [対象DIR]
+```
+
+**4. 判定結果に基づく実施**
+- Gemini「必要」+ CC「一致」→ 次Phase実施
+- Gemini「不要」+ CC「一致」→ 作業完了
+- Gemini vs CC 不一致 → ユーザー確認
+
+### AI独断の防止
+
+**❌ NEVER**:
+- AIが主観で「次Phaseは不要」と判断
+- 証跡ベース判定を省略
+- Gemini分析なしに進行
+
+**✅ ALWAYS**:
+- 各Phase完了後、必ずGemini分析を実施
+- CC検証で実証確認
+- 判定結果に基づき次ステップ決定
+
+---
+
 ## 実装スケジュール
 
 1. **Step 1実装**: 最小実装（証跡記録のみ）→ テスト → 確認

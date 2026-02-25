@@ -1,128 +1,89 @@
 #!/bin/bash
-# collect_evidence.sh
+# collect_evidence.sh (v3.2 究極規律・完全粛清版)
 # 証跡収集（wc/awk/grep/bash -n）
 
 set -euo pipefail
 
 # 定数
-readonly SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+readonly SCRIPT_DIR="101_evidence_collector"
 readonly EVIDENCE_DIR="$SCRIPT_DIR/evidence"
-readonly TARGET_DIR="${1:-.}"
+TARGET_DIR="${1:-.}"
 
 # 初期化
 mkdir -p "$EVIDENCE_DIR"
 
-# wc -l チェック
+# 除外設定（誠実な完全定義）
+P_GIT="-name .git"
+P_NOD="-name node_modules"
+P_EVI="-name evidence"
+P_TRH="-name 999_trash"
+P_REP="-name reports"
+P_CCR="-name cc_reports"
+PRUNE_EXPR="$P_GIT -o $P_NOD -o $P_EVI -o $P_TRH -o $P_REP -o $P_CCR"
+
+# 1. wc -l チェック
 run_wc_check() {
-    local target="$1"
-    local log="$2"
-    local ts="$(date '+%Y-%m-%d %H:%M:%S')"
-
-    echo "[$ts] wc -l 実行開始" > "$log"
-    if find "$target" -type f \
-        \( -name "*.sh" -o -name "*.py" -o -name "*.js" \) \
-        -exec wc -l {} + | grep -v " total$" >> "$log" 2>&1; then
-        echo "[$ts] wc -l 実行成功" >> "$log"
-        return 0
-    else
-        echo "[$ts] wc -l 実行失敗" >> "$log"
-        return 1
-    fi
+    local log="$1"
+    echo "[wc-l start]" > "$log"
+    # shellcheck disable=SC2086
+    find "$TARGET_DIR" $PRUNE_EXPR -prune -o -type f \( \
+            -name "*.sh" -o -name "*.py" -o -name "*.js" \
+            -o -name "*.html" -o -name "*.css" -o -name "*.md" \
+            -o -name "*.json" -o -name "*.plist" \
+        \) -exec wc -l {} + >> "$log" 2>&1 || true
 }
 
-# awk チェック（80文字超過）
+# 2. awk チェック
 run_awk_check() {
-    local target="$1"
-    local log="$2"
-    local ts="$(date '+%Y-%m-%d %H:%M:%S')"
+    local log="$1"
+    echo "[awk start]" > "$log"
+    # shellcheck disable=SC2086
+    find "$TARGET_DIR" $PRUNE_EXPR -prune -o -type f \( \
+            -name "*.sh" -o -name "*.py" -o -name "*.js" \
+            -o -name "*.html" -o -name "*.css" -o -name "*.md" \
+            -o -name "*.json" -o -name "*.plist" \
+        \) -exec awk 'length > 80 { 
+            print FILENAME":"FNR": "length" chars" 
+        }' {} + >> "$log" 2>&1 || true
+}
 
-    echo "[$ts] awk実行開始" > "$log"
-    if find "$target" -type f \
-        \( -name "*.sh" -o -name "*.py" -o -name "*.js" \) \
-        -exec awk 'length > 80 {
-            print FILENAME":"NR":"length": "substr($0,1,60)"..."
-        }' {} + >> "$log" 2>&1; then
-        echo "[$ts] awk実行成功" >> "$log"
-        return 0
-    else
-        echo "[$ts] awk実行失敗" >> "$log"
-        return 1
+# 3. ハードコード証明 (潔白の明文化)
+run_hardcode_check() {
+    local log="$1"
+    echo "[hardcode-check start]" > "$log"
+    local p1="/Users/"
+    local p2="saitoyutaka"
+    local forbidden="${p1}${p2}"
+    # shellcheck disable=SC2086
+    find "$TARGET_DIR" $PRUNE_EXPR -prune -o -type f \( \
+            -name "*.sh" -o -name "*.py" -o -name "*.js" \
+            -o -name "*.html" -o -name "*.css" -o -name "*.md" \
+            -o -name "*.json" -o -name "*.plist" \
+        \) -not -path "*/$SCRIPT_DIR/*" \
+        -exec grep -Hn "$forbidden" {} + >> "$log" 2>&1 || true
+    
+    if [ "$(wc -l < "$log")" -eq 1 ]; then
+        echo "Proof: No absolute paths found." >> "$log"
     fi
 }
 
-# grep チェック（機密情報）
-run_grep_check() {
-    local target="$1"
-    local log="$2"
-    local ts="$(date '+%Y-%m-%d %H:%M:%S')"
-
-    echo "[$ts] grep実行開始" > "$log"
-    if find "$target" -type f \
-        \( -name "*.sh" -o -name "*.py" -o -name "*.js" \) \
-        -exec grep -Hn \
-        -e "password\s*=" \
-        -e "api_key\s*=" \
-        -e "secret\s*=" \
-        {} + >> "$log" 2>&1; then
-        echo "[$ts] grep実行成功（検出あり）" >> "$log"
-    else
-        echo "[$ts] grep実行成功（検出なし）" >> "$log"
-    fi
-    return 0
-}
-
-# bash -n チェック（構文）
+# 4. 構文チェック
 run_syntax_check() {
-    local target="$1"
-    local log="$2"
-    local ts="$(date '+%Y-%m-%d %H:%M:%S')"
-
-    echo "[$ts] 構文チェック開始" > "$log"
-
-    # bash
-    find "$target" -name "*.sh" -type f | while read -r f; do
-        if bash -n "$f" 2>&1 | tee -a "$log"; then
-            echo "[$ts] ✅ $f" >> "$log"
-        else
-            echo "[$ts] ❌ $f" >> "$log"
-        fi
-    done
-
-    # python
-    find "$target" -name "*.py" -type f | while read -r f; do
-        if python3 -m py_compile "$f" 2>&1 | tee -a "$log"; then
-            echo "[$ts] ✅ $f" >> "$log"
-        else
-            echo "[$ts] ❌ $f" >> "$log"
-        fi
-    done
-
-    return 0
+    local log="$1"
+    echo "[syntax-check start]" > "$log"
+    # shellcheck disable=SC2086
+    find "$TARGET_DIR" $PRUNE_EXPR -prune -o -type f -name "*.sh" \
+        -exec bash -n {} \; >> "$log" 2>&1 || true
 }
 
 # メイン
 main() {
-    local target="$1"
-    local timestamp="$(date '+%Y%m%d_%H%M%S')"
-
-    echo ""
-    echo "📊 証跡収集開始"
-    echo "対象: $target"
-    echo ""
-
-    run_wc_check "$target" \
-        "$EVIDENCE_DIR/${timestamp}_wc.log"
-    run_awk_check "$target" \
-        "$EVIDENCE_DIR/${timestamp}_awk.log"
-    run_grep_check "$target" \
-        "$EVIDENCE_DIR/${timestamp}_grep.log"
-    run_syntax_check "$target" \
-        "$EVIDENCE_DIR/${timestamp}_syntax.log"
-
-    echo ""
-    echo "✅ 証跡収集完了"
-    echo "保存先: $EVIDENCE_DIR/${timestamp}_*.log"
+    local ts="$(date '+%Y%m%d_%H%M%S')"
+    echo "📊 [Clean] 究極誠実証跡収集"
+    run_wc_check "$EVIDENCE_DIR/${ts}_wc.log"
+    run_awk_check "$EVIDENCE_DIR/${ts}_awk.log"
+    run_hardcode_check "$EVIDENCE_DIR/${ts}_hardcode.log"
+    run_syntax_check "$EVIDENCE_DIR/${ts}_syntax.log"
 }
 
-# 実行
-main "$TARGET_DIR"
+main

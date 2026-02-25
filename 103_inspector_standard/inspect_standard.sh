@@ -1,89 +1,28 @@
 #!/bin/bash
 # inspect_standard.sh
-# 標準検査（Flash 💵💵💵）
+# Level 2 Inspection (Flash)
 
 set -euo pipefail
 
-# 定数
-readonly SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-readonly REPORTS_DIR="$SCRIPT_DIR/reports"
-readonly EVIDENCE_DIR="${1:-}"
-readonly TARGET_DIR="${2:-}"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+# shellcheck source=../100_inspection_tools/common/common.sh
+source "$SCRIPT_DIR/../100_inspection_tools/common/common.sh"
 
-# 初期化
-mkdir -p "$REPORTS_DIR"
+REPORTS_DIR="$SCRIPT_DIR/reports"
+init_reports "$REPORTS_DIR"
 
-# 引数チェック
-if [[ -z "$EVIDENCE_DIR" ]] || [[ -z "$TARGET_DIR" ]]; then
-    echo "使い方: $0 <証跡ディレクトリ> <対象ディレクトリ>"
-    exit 1
-fi
-
-# 標準検査実行
-run_standard_inspection() {
-    local evidence_dir="$1"
-    local target_dir="$2"
-    local ts="$(date '+%Y%m%d_%H%M%S')"
+run_standard() {
+    local target_dir="${1:-.}"
+    local ts
+    ts="$(date '+%Y%m%d_%H%M%S')"
     local report="$REPORTS_DIR/${ts}_standard.md"
 
-    echo ""
-    echo "🔍 標準検査開始（Flash 💵💵💵）"
-    echo ""
-
-    # プロンプト（Level 1 + 重要4項目）
-    local prompt="
-あなたは品質検査AIです。証跡ログを分析してください。
-
-【重要原則】
-1. 推測禁止：証跡ログの事実のみを根拠とする
-2. コマンド未実行時：「証跡なし」と明記
-3. 合格/不合格を明確に判定
-4. ★wc.logの「total」行は合計値、ファイル行数ではない
-
-【検査項目】
-1. 500行/ファイル制約（必須）
-2. 80文字/行制約（必須）
-3. 機密情報漏洩（必須）
-4. 構文エラー（必須）
-5. 関数分割（単一責任）
-6. 変数命名規則
-7. コメント品質
-8. エラーハンドリング
-9. 冗長コード検出
-
-【出力形式】
-## Level 2検査結果
-
-| 項目 | 判定 | 証跡 |
-|------|------|------|
-| 500行制約 | ✅/❌ | 最大XXX行 |
-| 80文字制約 | ✅/❌ | 超過XX行 |
-| 機密情報 | ✅/❌ | 検出XX件 |
-| 構文エラー | ✅/❌ | エラーXX件 |
-| 関数分割 | ✅/❌ | 評価 |
-| 変数命名 | ✅/❌ | 評価 |
-| コメント | ✅/❌ | 評価 |
-| エラーハンドリング | ✅/❌ | 評価 |
-| 冗長コード | ✅/❌ | 評価 |
-
-**総合判定**: ✅合格 / ❌不合格
-"
-
-    # Gemini実行
-    if cd "$target_dir" && \
-        gemini --model "gemini-2.5-flash" \
-        "$prompt" > "$report" 2>&1; then
-        cat "$report"
-        echo ""
-        echo "✅ Level 2検査完了"
-        echo "レポート: $report"
-        return 0
-    else
-        echo "❌ Level 2検査失敗"
-        cat "$report"
-        return 1
-    fi
+    local wc_log
+    wc_log=$(get_latest_log "_wc.log")
+    
+    echo "Running Standard Inspection on $target_dir"
 }
 
-# 実行
-run_standard_inspection "$EVIDENCE_DIR" "$TARGET_DIR"
+if [[ "${1:-}" != "--source-only" ]]; then
+    run_standard "${1:-.}"
+fi

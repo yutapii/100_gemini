@@ -1,0 +1,3 @@
+[hardcode-check start]
+./100_inspection_tools/検査.md:47:- **絶対パス排除**: `/Users/saitoyutaka/` などの個人環境に依存したパスが含まれていないか。
+./020_work_reports/20260221_2230_v3.2_system_completion.md:14:  - `/Users/saitoyutaka` をプロジェクト全域（コード・ドキュメント・設定）から根絶。

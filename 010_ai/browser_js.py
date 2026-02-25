@@ -1,71 +1,36 @@
-#!/usr/bin/env python3
-"""
-browser_js.py - ブラウザでJavaScript実行（コード目）
-
-使い方:
-    python3 browser_js.py "document.title"
-    python3 browser_js.py "document.querySelectorAll('h2').length"
-    python3 browser_js.py --file script.js
-"""
 import sys
-import argparse
 import subprocess
-from pathlib import Path
+from path_utils import get_safe_path
 
-# セキュリティ: JSファイルは特定ディレクトリのみ許可
-ALLOWED_JS_DIR = Path.home() / "100_gemini/010_ai/safe_scripts"
-
-def validate_js_file(filepath):
-    """JSパスのバリデーション（パストラバーサル対策）"""
-    path = Path(filepath).resolve()
-    if not path.is_relative_to(ALLOWED_JS_DIR):
-        raise ValueError(
-            f"JSファイルが許可されたディレクトリ外: {filepath}"
-        )
-    if not path.exists():
-        raise FileNotFoundError(
-            f"JSファイルが見つかりません: {filepath}"
-        )
-    return path
-
-
-def run_js_chrome(js_code):
-    """ChromeでJavaScript実行
-
-    注意: 外部JSは危険。信頼できるファイルのみ使用
+def execute_browser_js(url, js_code):
     """
-    script = f'''
-    tell application "Google Chrome"
-        tell active tab of front window
-            execute javascript "{js_code}"
-        end tell
-    end tell
-    '''
-    result = subprocess.run(
-        ["osascript", "-e", script],
-        capture_output=True,
-        text=True
-    )
-    return result.stdout.strip()
+    Execute JavaScript in Safari via AppleScript (Secure version)
+    """
+    try:
+        # URLのバリデーション（簡易）
+        if not url.startswith(("http://", "https://")):
+            raise ValueError("Invalid URL")
 
-def main():
-    parser = argparse.ArgumentParser(description="ブラウザJS実行")
-    parser.add_argument("code", nargs="?", help="実行するJSコード")
-    parser.add_argument("--file", "-f", help="JSファイル")
-    args = parser.parse_args()
-
-    if args.file:
-        validated_path = validate_js_file(args.file)
-        with open(validated_path, "r") as f:
-            js_code = f.read().replace('"', '\\"').replace('\n', ' ')
-    elif args.code:
-        js_code = args.code.replace('"', '\\"')
-    else:
-        print("Error: code or --file required", file=sys.stderr)
-        sys.exit(1)
-
-    result = run_js_chrome(js_code)
-    print(result)
+        applescript = """
+        on run {target_url, target_js}
+            tell application "Safari"
+                if (count of documents) is 0 then
+                    make new document with properties {URL:target_url}
+                    delay 2
+                end if
+                do JavaScript target_js in document 1
+            end tell
+        end run
+        """
+        subprocess.run([
+            "osascript", "-e", applescript, url, js_code
+        ], check=True)
+        return True
+    except Exception as e:
+        print(f"Error: {e}")
+        return False
 
 if __name__ == "__main__":
-    main()
+    if len(sys.argv) < 3:
+        sys.exit(1)
+    execute_browser_js(sys.argv[1], sys.argv[2])

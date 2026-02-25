@@ -1,4 +1,20 @@
-🚀 Gemini CLI Server on port 5100
-🚀 Gemini CLI Server on port 5100
-🚀 Gemini CLI Server on port 5100
-🚀 Gemini CLI Server on port 5100
+  File "/Users/saitoyutaka/100_gemini/050_server/main.py", line 12
+    from 010_ai.core import Cabinet
+            ^
+SyntaxError: invalid decimal literal
+  File "/Users/saitoyutaka/100_gemini/050_server/main.py", line 12
+    from 010_ai.core import Cabinet
+            ^
+SyntaxError: invalid decimal literal
+  File "/Users/saitoyutaka/100_gemini/050_server/main.py", line 12
+    from 010_ai.core import Cabinet
+            ^
+SyntaxError: invalid decimal literal
+  File "/Users/saitoyutaka/100_gemini/050_server/main.py", line 12
+    from 010_ai.core import Cabinet
+            ^
+SyntaxError: invalid decimal literal
+  File "/Users/saitoyutaka/100_gemini/050_server/main.py", line 12
+    from 010_ai.core import Cabinet
+            ^
+SyntaxError: invalid decimal literal

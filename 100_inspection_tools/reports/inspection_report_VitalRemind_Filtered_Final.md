@@ -1,0 +1,59 @@
+## 鋼鉄の関門 (v3.2) フィルタ済検査レポート (VitalRemind)
+**対象**: ../040_VitalRemind/ (Project Specific)
+
+### 1. 規律遵守状況
+| ファイル | 行数 (MAX 500) | 80文字超 (MAX 0) | 判定 |
+| :--- | :---: | :---: | :---: |
+| 131_pashali/app.py | 254 | 12 | ❌ |
+| 143_pdf_form/test_deep_inspect.py | 64 | 1 | ❌ |
+| 143_pdf_form/fill_shobyouteate.py | 169 | 2 | ❌ |
+| 143_pdf_form/replace_dates_reportlab.py | 160 | 6 | ❌ |
+| 143_pdf_form/detect_grid.py | 83 | 5 | ❌ |
+| 143_pdf_form/auto_replace_dates_final.py | 232 | 3 | ❌ |
+| 143_pdf_form/fill_by_coordinate.py | 121 | 1 | ❌ |
+| 143_pdf_form/test_extract_fields.py | 33 | 1 | ❌ |
+| 143_pdf_form/test_kigou_only.py | 74 | 0 | ✅ |
+| 143_pdf_form/test_erase_morphology.py | 217 | 6 | ❌ |
+| 143_pdf_form/fill_with_layers.py | 226 | 2 | ❌ |
+| 143_pdf_form/auto_replace_dates.py | 178 | 7 | ❌ |
+| 143_pdf_form/create_202512_image.py | 314 | 0 | ✅ |
+| 143_pdf_form/update_申請期間.py | 144 | 4 | ❌ |
+| 143_pdf_form/open_pdf_right.sh | 37 | 0 | ✅ |
+| 143_pdf_form/extract_text_coordinates.py | 48 | 1 | ❌ |
+| 143_pdf_form/auto_replace_dates_v2.py | 213 | 0 | ✅ |
+| 143_pdf_form/debug_grid.py | 141 | 3 | ❌ |
+| 143_pdf_form/auto_replace_dates_v3.py | 144 | 9 | ❌ |
+| 143_pdf_form/create_202512.py | 107 | 4 | ❌ |
+| 143_pdf_form/test_申請期間_x.py | 115 | 1 | ❌ |
+| 143_pdf_form/test_seinengappi_checkbox.py | 86 | 1 | ❌ |
+| 143_pdf_form/test_bangou_x.py | 97 | 1 | ❌ |
+| 143_pdf_form/create_shitaga_layer.py | 175 | 1 | ❌ |
+| 143_pdf_form/create_202512_pymupdf.py | 114 | 7 | ❌ |
+| 143_pdf_form/test_erase_only.py | 180 | 6 | ❌ |
+| 143_pdf_form/test_pypdf_fields.py | 43 | 0 | ✅ |
+| 100_schedule/add_to_calendar.py | 104 | 20 | ❌ |
+| 100_schedule/delete_duplicates.py | 79 | 1 | ❌ |
+| 040_security/api_keys.sh | 28 | 2 | ❌ |
+| 127_straw_training/06_error-logger.js | 81 | 0 | ✅ |
+| 127_straw_training/03_audio-engine.js | 350 | 0 | ✅ |
+| 127_straw_training/93_5S_VERIFICATION.sh | 268 | 7 | ❌ |
+| 127_straw_training/04b_medical-validator.js | 149 | 0 | ✅ |
+| 127_straw_training/01_app-core.js | 259 | 0 | ✅ |
+| 127_straw_training/11_report.js | 364 | 0 | ✅ |
+| 127_straw_training/04_training-logic.js | 419 | 0 | ✅ |
+| 127_straw_training/05_ui-controller.js | 398 | 0 | ✅ |
+| 127_straw_training/02_storage-manager.js | 183 | 0 | ✅ |
+| 127_straw_training/99_start_server.sh | 25 | 3 | ❌ |
+| 050_server/reminder_service.py | 128 | 0 | ✅ |
+| 050_server/main.py | 421 | 5 | ❌ |
+| 050_server/calendar_api.py | 253 | 9 | ❌ |
+| 077_oauth_qr/oauth_qr.py | 67 | 0 | ✅ |
+| 148_document_ai/gemini_docai_hybrid.py | 89 | 3 | ❌ |
+| 148_document_ai/pdf_to_html.py | 117 | 5 | ❌ |
+| 148_document_ai/document_ai_pdf.py | 368 | 6 | ❌ |
+| 125_medication/update_medicine_reminder.py | 143 | 2 | ❌ |
+| 125_medication/cleanup_calendar.py | 71 | 3 | ❌ |
+| 125_medication/fix_calendar.py | 50 | 0 | ✅ |
+| 125_medication/add_medicine_reminder.py | 100 | 3 | ❌ |
+| assets/index.js | 194 | 12 | ❌ |
+| 078_oauth_relay/oauth_relay.py | 90 | 0 | ✅ |

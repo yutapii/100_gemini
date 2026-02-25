@@ -1,103 +1,22 @@
 #!/bin/bash
 # inspect_pro.sh
-# 精密検査（Pro 💵💵💵💵💵💵、深夜帯限定）
+# 100_gemini Pro Audit
 
 set -euo pipefail
 
-# 定数
-readonly SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-readonly REPORTS_DIR="$SCRIPT_DIR/reports"
-readonly EVIDENCE_DIR="${1:-}"
-readonly TARGET_DIR="${2:-}"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+# shellcheck source=../100_inspection_tools/common/common.sh
+source "$SCRIPT_DIR/../100_inspection_tools/common/common.sh"
 
-# 初期化
-mkdir -p "$REPORTS_DIR"
+run_pro() {
+    local target="${1:-.}"
+    local caller="$BASE_DIR/120_inspect_caller/120_inspect_caller.sh"
+    
+    # Audit using shared caller
+    echo "Audit: $target"
+    "$BASE_DIR/107_orchestrator/run_inspection.sh" "$target"
+}
 
-# 引数チェック
-if [[ -z "$EVIDENCE_DIR" ]] || [[ -z "$TARGET_DIR" ]]; then
-    echo "使い方: $0 <証跡ディレクトリ> <対象ディレクトリ>"
-    exit 1
+if [[ "${1:-}" != "--source-only" ]]; then
+    run_pro "${1:-.}"
 fi
-
-# 深夜帯判定
-is_night_mode() {
-    local hour=$(date +%H)
-    if [ "$hour" -ge 1 ] && [ "$hour" -lt 6 ]; then
-        return 0
-    else
-        return 1
-    fi
-}
-
-# 精密検査実行
-run_pro_inspection() {
-    local evidence_dir="$1"
-    local target_dir="$2"
-    local ts="$(date '+%Y%m%d_%H%M%S')"
-    local report="$REPORTS_DIR/${ts}_pro.md"
-
-    # 深夜帯チェック
-    if ! is_night_mode; then
-        echo "⚠️ 深夜帯のみ実行可能（01:00-05:59）"
-        echo "現在時刻: $(date '+%H:%M')"
-        return 1
-    fi
-
-    echo ""
-    echo "🔍 精密検査開始（Pro 💵💵💵💵💵💵）"
-    echo ""
-
-    # プロンプト（Level 2 + 精密4項目）
-    local prompt="
-あなたは品質検査AIです。
-証跡ログを徹底分析してください。
-
-【重要原則】
-1. 推測禁止：証跡ログの事実のみを根拠とする
-2. コマンド未実行時：「証跡なし」と明記
-3. 合格/不合格を明確に判定
-4. ★wc.logの「total」行は合計値、ファイル行数ではない
-
-【検査項目】
-1. 500行/ファイル制約（必須）
-2. 80文字/行制約（必須）
-3. 機密情報漏洩（必須）
-4. 構文エラー（必須）
-5. 関数分割（単一責任）
-6. 変数命名規則
-7. コメント品質
-8. エラーハンドリング
-9. 冗長コード検出
-10. セキュリティ脆弱性
-11. パフォーマンス問題
-12. 保守性評価
-13. TPS原則適合性
-
-【出力形式】
-## Level 3検査結果（精密）
-
-| 項目 | 判定 | 証跡 |
-|------|------|------|
-| 全13項目 | ✅/❌ | 詳細 |
-
-**総合判定**: ✅合格 / ❌不合格
-"
-
-    # Gemini実行
-    if cd "$target_dir" && \
-        gemini --model "gemini-2.5-pro" \
-        "$prompt" > "$report" 2>&1; then
-        cat "$report"
-        echo ""
-        echo "✅ Level 3検査完了"
-        echo "レポート: $report"
-        return 0
-    else
-        echo "❌ Level 3検査失敗"
-        cat "$report"
-        return 1
-    fi
-}
-
-# 実行
-run_pro_inspection "$EVIDENCE_DIR" "$TARGET_DIR"

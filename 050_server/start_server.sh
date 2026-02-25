@@ -1,6 +1,9 @@
 #!/bin/bash
-# Gemini CLI Server 起動スクリプト
+# start_server.sh
 
-cd /Users/saitoyutaka/100_gemini/050_server
-python3 main.py &
-echo "Gemini CLI Server started on port 5100"
+# スクリプトの場所へ移動（ハードコード排除）
+cd "$(dirname "$0")"
+
+# サーバー起動
+python3 main.py >> gemini-server.log 2>&1 &
+echo "Gemini Server started on port 5100"

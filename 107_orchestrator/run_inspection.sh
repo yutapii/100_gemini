@@ -1,126 +1,35 @@
 #!/bin/bash
-# run_inspection.sh
-# 統合制御（3段階エスカレーション）
+# run_inspection.sh (v3.2 Final)
+# 100_gemini Orchestrator
 
 set -euo pipefail
 
-# 定数
-readonly BASE_DIR="$HOME/100_gemini"
-readonly COLLECTOR="$BASE_DIR/101_evidence_collector"
-readonly LITE="$BASE_DIR/102_inspector_lite"
-readonly STANDARD="$BASE_DIR/103_inspector_standard"
-readonly PRO="$BASE_DIR/104_inspector_pro"
-readonly NIGHT="$BASE_DIR/105_night_mode"
-readonly GMAIL="$BASE_DIR/106_gmail_reporter"
+TARGET_DIR="${1:-.}"
+CALLER="./120_inspect_caller/120_inspect_caller.sh"
+EVI_DIR="./101_evidence_collector/evidence"
 
-# 引数
-readonly TARGET_DIR="${1:-.}"
-readonly FORCE="${2:-}"
+echo "TARGET: $TARGET_DIR"
 
-# ヘルプ
-if [[ "$TARGET_DIR" == "--help" ]]; then
-    echo "使い方: $0 <対象ディレクトリ> [--force]"
-    echo ""
-    echo "オプション:"
-    echo "  --force : 深夜帯チェックをスキップ"
-    exit 0
-fi
+# EVIDENCE
+rm -f "$EVI_DIR"/*.log
+"./101_evidence_collector/collect_evidence.sh" "$TARGET_DIR"
 
-# Geminiリトライ実行
-run_with_retry() {
-    local cmd="$1"
-    local max_retries=3
-    local retry_wait=60
-    local attempt=1
+W=$(ls -t "$EVI_DIR"/*_wc.log | head -1)
+A=$(ls -t "$EVI_DIR"/*_awk.log | head -1)
+H=$(ls -t "$EVI_DIR"/*_hardcode.log | head -1)
 
-    while [ $attempt -le $max_retries ]; do
-        echo "🔄 試行 $attempt/$max_retries..."
+# AUDIT
+cat << EOF | "$CALLER"
+【Audit】
+Target: $TARGET_DIR
 
-        if eval "$cmd"; then
-            return 0
-        else
-            if [ $attempt -lt $max_retries ]; then
-                echo "⚠️ リトライ待機（${retry_wait}秒）..."
-                sleep $retry_wait
-                ((attempt++))
-            else
-                return 1
-            fi
-        fi
-    done
-}
+【Evidence】
+- wc: $(cat "$W")
+- awk: $(cat "$A")
+- path: $(cat "$H")
 
-# メイン
-main() {
-    echo ""
-    echo "🎯 品質検査統合制御"
-    echo "対象: $TARGET_DIR"
-    echo ""
-
-    # STEP 1: 証跡収集
-    echo "【STEP 1】証跡収集"
-    if ! "$COLLECTOR/collect_evidence.sh" "$TARGET_DIR"; then
-        echo "❌ 証跡収集失敗"
-        exit 1
-    fi
-
-    # 最新証跡ディレクトリ取得
-    local evidence_dir="$COLLECTOR/evidence"
-
-    # STEP 2: 簡易検査（Level 1）
-    echo ""
-    echo "【STEP 2】簡易検査（Flash-Lite 💵）"
-    if run_with_retry \
-        "$LITE/inspect_lite.sh '$evidence_dir' '$TARGET_DIR'"; then
-        echo "✅ 簡易検査合格"
-        exit 0
-    fi
-
-    # STEP 3: 標準検査（Level 2）
-    echo ""
-    echo "【STEP 3】標準検査（Flash 💵💵💵）"
-    if run_with_retry \
-        "$STANDARD/inspect_standard.sh '$evidence_dir' '$TARGET_DIR'"; then
-        echo "✅ 標準検査合格"
-        exit 0
-    fi
-
-    # STEP 4: 精密検査（Level 3、深夜帯のみ）
-    echo ""
-    echo "【STEP 4】精密検査（Pro 💵💵💵💵💵💵）"
-
-    # 深夜帯チェック（--forceでスキップ）
-    if [[ "$FORCE" != "--force" ]]; then
-        if ! "$NIGHT/night_mode_controller.sh" --test; then
-            echo "⚠️ 深夜帯のみ実行可能（01:00-05:59）"
-            echo "または --force オプションで強制実行"
-            exit 1
-        fi
-    fi
-
-    if run_with_retry \
-        "$PRO/inspect_pro.sh '$evidence_dir' '$TARGET_DIR'"; then
-        echo "✅ 精密検査合格"
-
-        # Gmail送信
-        local latest_report=$(ls -t "$PRO/reports/"*.md | head -1)
-        if [[ -n "$latest_report" ]]; then
-            echo ""
-            echo "📧 Gmail送信中..."
-            if python3 "$GMAIL/send_gmail_report.py" \
-                "$latest_report"; then
-                echo "✅ Gmail送信成功"
-            else
-                echo "⚠️ Gmail送信失敗（検査は合格）"
-            fi
-        fi
-
-        exit 0
-    fi
-
-    echo "❌ 全検査不合格"
-    exit 1
-}
-
-# 実行
-main
+【Mission】
+1. 80 chars limit.
+2. No absolute paths.
+3. 100 points or FAIL.
+EOF

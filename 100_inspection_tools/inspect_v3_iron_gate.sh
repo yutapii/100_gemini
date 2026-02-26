@@ -1,7 +1,7 @@
 #!/bin/bash
 # inspect_v3_iron_gate.sh
-# 100_Gemini 鋼鉄の関門 (v3.2)
-# 規律・セキュリティ・メンテナンス性 統合検査
+# 100_Gemini 鋼鉄の関門 (V3.5 Semantic & Asset Excellence)
+# 規律・セキュリティ・メンテナンス性・成長性 統合検査
 
 set -euo pipefail
 
@@ -18,40 +18,61 @@ readonly REPORT_FILE="$RDIR/inspection_report_${TS}.md"
 mkdir -p "$EVIDENCE_DIR" "$RDIR"
 
 {
-echo "## 鋼鉄の関門 (v3.2) 検査レポート"
+echo "## 鋼鉄の関門 (V3.5) 検査レポート"
 echo "**対象**: $TARGET_DIR"
 echo "**実施日時**: $(date '+%Y-%m-%d %H:%M')"
+GATE="$SCRIPT_DIR/../083_quality_inspection"
+echo "**規律基準**: [IRON_GATE_V3.5.md]($GATE/IRON_GATE_V3.5.md)"
+echo ""
+echo "### 5 Whys 思考プロセス（TPS）"
+echo "1. なぜ肥大化したのか？"
+echo "2. なぜそこに居座るのか？"
+echo "3. なぜその構造（セマンティクス）か？"
+echo "4. なぜ他者が理解できるのか？"
+echo "5. なぜ今、是正が必要なのか？"
 echo ""
 } > "$REPORT_FILE"
 
-# === 1. 規律検査 (500行 / 80文字) ===
+# === 1. 規律検査 (450行警告 / 500行上限 / 80文字) ===
 {
-echo "### 1. 規律遵守状況"
-echo "| ファイル | 行数 | 80文字超 | 判定 |"
-echo "| :--- | :---: | :---: | :---: |"
+echo "### 1. 規律遵守状況 (成長性・可読性)"
+echo "| ファイル | 行数 | 80文字超 | 判定 | 備考 |"
+echo "| :--- | :---: | :---: | :---: | :--- |"
 } >> "$REPORT_FILE"
 
-EXCL="-not -path */.*"
-EXCL="$EXCL -not -path */node_modules/*"
-EXCL="$EXCL -not -path */999_trash/*"
-
 find "$TARGET_DIR" -type f \
-    \( -name "*.py" -o -name "*.js" -o -name "*.sh" \) \
+    \( -name "*.py" -o -name "*.js" \
+       -o -name "*.sh" -o -name "*.md" \
+       -o -name "*.html" \) \
     -not -path "*/.git/*" \
     -not -path "*/node_modules/*" \
     -not -path "*/999_trash/*" \
+    -not -path "*/venv/*" \
+    -not -path "*/.venv/*" \
+    -not -path "*/site-packages/*" \
   | while read -r file; do
 
     lc=$(wc -l < "$file" | xargs)
     ll=$(awk 'length($0) > 80' "$file" | wc -l | xargs)
 
     status="✅"
-    if [ "$lc" -gt 500 ] || [ "$ll" -gt 0 ]; then
+    note="良好"
+    
+    if [ "$lc" -gt 450 ]; then
+        status="⚠️"
+        note="成長警告（論理分割の検討要）"
+    fi
+    if [ "$lc" -gt 500 ]; then
         status="❌"
+        note="規律違反（物理分割必須）"
+    fi
+    if [ "$ll" -gt 0 ]; then
+        status="❌"
+        note="80文字超過（可読性欠如）"
     fi
 
     fname=$(basename "$file")
-    echo "| $fname | $lc | $ll | $status |" \
+    echo "| $fname | $lc | $ll | $status | $note |" \
         >> "$REPORT_FILE"
 done
 echo "" >> "$REPORT_FILE"
@@ -95,8 +116,8 @@ else
 fi
 echo "" >> "$REPORT_FILE"
 
-# === 3. メンテナンス性 ===
-echo "### 3. メンテナンス性・構造" >> "$REPORT_FILE"
+# === 3. セマンティクス・メンテナンス性 ===
+echo "### 3. セマンティクス・構造" >> "$REPORT_FILE"
 
 fc=$(find "$TARGET_DIR" -maxdepth 1 \
     -type d -name "[0-9][0-9][0-9]_*" \
@@ -120,13 +141,16 @@ echo "### 最終判定"
 } >> "$REPORT_FILE"
 
 if grep -q "❌" "$REPORT_FILE"; then
-    echo "**判定: 不合格 (再検査が必要)**" \
+    echo "**判定: 不適合 (改善が必要)**" \
+        >> "$REPORT_FILE"
+elif grep -q "⚠️" "$REPORT_FILE"; then
+    echo "**判定: 適合 (成長警告あり・Kaizen継続)**" \
         >> "$REPORT_FILE"
 else
-    echo "**判定: 合格 (100点)**" \
+    echo "**判定: 適合 (Kaizen継続)**" \
         >> "$REPORT_FILE"
 fi
 echo "" >> "$REPORT_FILE"
-echo "Gemini🔍 (鋼鉄の関門 v3.2)" >> "$REPORT_FILE"
+echo "Gemini🔍 (鋼鉄の関門 V3.5)" >> "$REPORT_FILE"
 
 echo "✅ 検査完了: $REPORT_FILE"

@@ -16,11 +16,12 @@ class WhitetoolCore:
             "030_config", "040_security", "050_server",
             "066_evidence", "080_tps", "100_inspection_tools",
             "101_evidence_collector", "107_orchestrator",
-            "120_inspect_caller", "cc_reports"
+            "120_inspect_caller"
         ]
 
     def get_safe_path(self, rel_path: str) -> Path:
-        """指定された相対パスを安全な絶対パスとして解決する"""
+        """指定された相対パスを
+        安全な絶対パスとして解決する"""
         target = (self.root / rel_path).resolve()
         if not str(target).startswith(str(self.root)):
             raise PermissionError(f"Gave access denied: {rel_path}")
@@ -29,7 +30,8 @@ class WhitetoolCore:
     def validate_code_standards(self, file_path: str) -> Tuple[bool, List[str]]:
         """
         与党としての「規律検査」。
-        単なるエラー出力ではなく、具体的な「修正の導き」を返す。
+        エラー出力でなく
+        具体的な「修正の導き」を返す。
         """
         errors = []
         path = self.get_safe_path(file_path)
@@ -52,8 +54,10 @@ class WhitetoolCore:
         return len(errors) == 0, errors
 
     def get_system_map(self):
-        """所番地（ディレクトリ構成）の妥当性をチェックする"""
-        # 今後、ディレクトリ番号の重複や欠番を監視するロジックを追加予定
+        """所番地（ディレクトリ構成）の
+        妥当性をチェックする"""
+        # 今後、ディレクトリ番号の重複や欠番を
+        # 監視するロジックを追加予定
         pass
 
 # グローバルな官邸インスタンス

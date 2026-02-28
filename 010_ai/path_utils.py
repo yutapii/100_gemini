@@ -6,6 +6,7 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
 # 安全な操作が許可されるディレクトリ（ホワイトリスト）
 ALLOWED_SUBDIRS = [
+    "010_ai",
     "020_work_reports", 
     "066_evidence", 
     "input", 

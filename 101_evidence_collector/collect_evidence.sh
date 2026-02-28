@@ -51,16 +51,19 @@ run_awk_check() {
 run_hardcode_check() {
     local log="$1"
     echo "[hardcode-check start]" > "$log"
-    local p1="/Users/"
-    local p2="saitoyutaka"
-    local forbidden="${p1}${p2}"
+    # shellcheck disable=SC2016
+    local forbidden='[USER_HOME]'
+    # 禁止パス（環境変数等から生成すべきだが、
+    # 透明性確保のため抽象化文字列を想定）
+    # 実際のスキャンは find コマンドで動的に制御
+    local target_home="$HOME"
+    
     # shellcheck disable=SC2086
     find "$TARGET_DIR" $PRUNE_EXPR -prune -o -type f \( \
             -name "*.sh" -o -name "*.py" -o -name "*.js" \
             -o -name "*.html" -o -name "*.css" -o -name "*.md" \
             -o -name "*.json" -o -name "*.plist" \
-        \) -not -path "*/$SCRIPT_DIR/*" \
-        -exec grep -Hn "$forbidden" {} + >> "$log" 2>&1 || true
+        \) -exec grep -Hn "$target_home" {} + >> "$log" 2>&1 || true
     
     if [ "$(wc -l < "$log")" -eq 1 ]; then
         echo "Proof: No absolute paths found." >> "$log"
